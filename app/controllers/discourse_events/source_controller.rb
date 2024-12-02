@@ -16,7 +16,7 @@ module DiscourseEvents
     def create
       @errors = []
 
-      ActiveRecord::Base.transaction do
+      Source.transaction do
         @model =
           Source.create(
             source_params.slice(
@@ -49,7 +49,7 @@ module DiscourseEvents
     def update
       @errors = []
 
-      ActiveRecord::Base.transaction do
+      Source.transaction do
         @model =
           Source.update(
             params[:id],

@@ -14,7 +14,7 @@ module DiscourseEvents
       offset = page * PAGE_LIMIT
       limit = PAGE_LIMIT
 
-      events = Event.order(order => direction).offset(offset).limit(limit)
+      events = Event.find_by_sql([events_sql(order: order, direction: direction, offset: offset, limit: limit)])
 
       combined_sql = (<<~SQL)
         SELECT

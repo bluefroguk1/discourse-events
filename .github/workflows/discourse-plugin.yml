@@ -10,4 +10,24 @@ on:
 
 jobs:
   ci:
-    uses: discourse/.github/.github/workflows/discourse-plugin.yml@v1
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.0
+
+      - name: Install dependencies
+        run: |
+          gem install bundler
+          bundle install --jobs 4 --retry 3
+
+      - name: Run tests
+        run: bundle exec rake spec
+
+      - name: Run RuboCop
+        run: bundle exec rubocop
