@@ -274,6 +274,13 @@ export default {
         },
       });
 
+      api.createWidget("hamburger-menu", {
+        tagName: "div.hamburger-menu",
+        html() {
+          return "";
+        },
+      });
+
       if (siteSettings.events_hamburger_menu_calendar_link) {
         api.decorateWidget("hamburger-menu:generalLinks", () => {
           return {
