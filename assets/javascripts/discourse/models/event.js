@@ -12,6 +12,7 @@ Event.reopenClass({
     return ajax("/admin/plugins/events/event", {
       type: "GET",
       data,
+      cache: true,
     }).catch(popupAjaxError);
   },
 
@@ -19,6 +20,7 @@ Event.reopenClass({
     return ajax("/admin/plugins/events/event/all", {
       type: "GET",
       data,
+      cache: true,
     }).catch(popupAjaxError);
   },
 

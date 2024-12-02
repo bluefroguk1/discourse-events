@@ -30,10 +30,10 @@ module DiscourseEvents
     end
 
     def query_value_format
-      if self.query_column === :name
+      case self.query_column
+      when "name"
         errors.add(:query_value, "invalid") unless self.query_value =~ /[a-zA-Z0-9]/
-      end
-      if self.query_column === :start_time
+      when "start_time"
         begin
           DateTime.parse self.query_value
         rescue ArgumentError

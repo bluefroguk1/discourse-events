@@ -18,7 +18,10 @@ const Source = EmberObject.extend({
 
 Source.reopenClass({
   all() {
-    return ajax("/admin/plugins/events/source").catch(popupAjaxError);
+    return ajax("/admin/plugins/events/source", {
+      type: "GET",
+      cache: true,
+    }).catch(popupAjaxError);
   },
 
   update(source) {
@@ -26,6 +29,7 @@ Source.reopenClass({
       type: "PUT",
       contentType: "application/json",
       data: JSON.stringify({ source }),
+      cache: true,
     }).catch(popupAjaxError);
   },
 

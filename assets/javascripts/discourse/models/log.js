@@ -9,6 +9,7 @@ Log.reopenClass({
     return ajax("/admin/plugins/events/log", {
       type: "GET",
       data,
+      cache: true,
     }).catch(popupAjaxError);
   },
 });
