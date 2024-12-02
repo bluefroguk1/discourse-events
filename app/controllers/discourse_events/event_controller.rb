@@ -14,34 +14,34 @@ module DiscourseEvents
       offset = page * PAGE_LIMIT
       limit = PAGE_LIMIT
 
-      events =
-        DB.query(events_sql(order: order, direction: direction, offset: offset, limit: limit))
+      events = Event.order(order => direction).offset(offset).limit(limit)
 
-      with_topics_sql = (<<~SQL)
-        SELECT COUNT(id) FROM (#{Event.list_sql}) AS events
-        WHERE cardinality(topic_ids) > 0
+      combined_sql = (<<~SQL)
+        SELECT
+          COUNT(CASE WHEN cardinality(topic_ids) > 0 THEN 1 END) AS with_topics_count,
+          COUNT(CASE WHEN cardinality(topic_ids) = 0 THEN 1 END) AS without_topics_count
+        FROM (#{Event.list_sql}) AS events
       SQL
 
-      without_topics_sql = (<<~SQL)
-        SELECT COUNT(id) FROM (#{Event.list_sql}) AS events
-        WHERE cardinality(topic_ids) = 0
-      SQL
+      combined_query = ActiveRecord::Base.connection.execute(combined_sql).first
 
-      with_topics_query, without_topics_query = DB.query(with_topics_sql), DB.query(without_topics_sql)
+      providers = Rails.cache.fetch("providers_list", expires_in: 12.hours) do
+        Provider.all.to_a
+      end
 
       render_json_dump(
         page: page,
         filter: filter,
         order: order,
-        with_topics_count: with_topics_query.first.count,
-        without_topics_count: without_topics_query.first.count,
+        with_topics_count: combined_query["with_topics_count"],
+        without_topics_count: combined_query["without_topics_count"],
         events: serialize_data(events, EventSerializer, root: false),
-        providers: serialize_data(Provider.all, ProviderSerializer, root: false),
+        providers: serialize_data(providers, ProviderSerializer, root: false),
       )
     end
 
     def all
-      events = DB.query(events_sql)
+      events = Event.all
       render json: { event_ids: events.map(&:id) }.as_json
     end
 
