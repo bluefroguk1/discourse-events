@@ -48,41 +48,45 @@ module DiscourseEvents
       @updated_event_uids = []
 
       if imported_events.present?
+        events_to_create = []
+        events_to_update = []
+        registrations_to_upsert = []
+
         imported_events.each do |uid, data|
           event_source = source.event_sources.find_by(uid: uid)
 
           formatted_data = format_event_data(data)
 
           if event_source
-            event_source.event.update!(formatted_data)
+            events_to_update << { id: event_source.event.id, **formatted_data }
             updated_event_uids << event_source.uid
           else
-            ActiveRecord::Base.transaction do
-              event = Event.create!(formatted_data)
-              event_source = EventSource.create!(uid: uid, event_id: event.id, source_id: source.id)
-            end
-
-            created_event_uids << event_source.uid
+            events_to_create << { uid: uid, **formatted_data }
+            created_event_uids << uid
           end
 
-          if event_source.event.id && data[:registrations].present?
-            registrations =
-              data[:registrations].map do |registration|
-                result = {
-                  event_id: event_source.event.id,
-                  email: registration[:email],
-                  uid: registration[:uid],
-                  name: registration[:name],
-                  status: nil,
-                }
-                if registration[:status] &&
-                     EventRegistration.statuses.keys.include?(registration[:status])
-                  result[:status] = EventRegistration.statuses[registration[:status]]
-                end
-                result
+          if data[:registrations].present?
+            data[:registrations].each do |registration|
+              result = {
+                event_id: event_source&.event&.id,
+                email: registration[:email],
+                uid: registration[:uid],
+                name: registration[:name],
+                status: nil,
+              }
+              if registration[:status] &&
+                   EventRegistration.statuses.keys.include?(registration[:status])
+                result[:status] = EventRegistration.statuses[registration[:status]]
               end
-            EventRegistration.upsert_all(registrations, unique_by: %i[event_id email])
+              registrations_to_upsert << result
+            end
           end
+        end
+
+        ActiveRecord::Base.transaction do
+          Event.upsert_all(events_to_create) if events_to_create.any?
+          Event.upsert_all(events_to_update) if events_to_update.any?
+          EventRegistration.upsert_all(registrations_to_upsert, unique_by: %i[event_id email]) if registrations_to_upsert.any?
         end
       end
 

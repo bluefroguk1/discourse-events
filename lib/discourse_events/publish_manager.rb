@@ -108,14 +108,17 @@ module DiscourseEvents
         published_events[source.id] = published_event if published_event.present?
       end
 
+      sources_to_upsert = []
       sources.each do |source|
         published_event = published_events[source.id]
 
         if published_event.present?
           params = { uid: published_event.metadata.uid, source_id: source.id, event_id: event.id }
-          EventSource.create!(params)
+          sources_to_upsert << params
         end
       end
+
+      EventSource.upsert_all(sources_to_upsert) if sources_to_upsert.any?
 
       event.present? ? event : false
     end
@@ -138,6 +141,7 @@ module DiscourseEvents
         end
 
       if event.event_sources
+        event_sources_to_update = []
         event.event_sources.each do |event_source|
           source = event_source.source
           publisher.setup_provider(source.provider)
@@ -147,10 +151,13 @@ module DiscourseEvents
 
           begin
             publisher.update_event(data: source_data, opts: source.source_options_hash)
+            event_sources_to_update << event_source
           rescue => error
             logger.error(error.message)
           end
         end
+
+        EventSource.upsert_all(event_sources_to_update.map { |es| { id: es.id, updated_at: Time.now } }) if event_sources_to_update.any?
       end
 
       event.update!(data.update_params)
@@ -161,6 +168,7 @@ module DiscourseEvents
       return false unless event
 
       if event.event_sources
+        event_sources_to_destroy = []
         event.event_sources.each do |event_source|
           source = event_source.source
           publisher.setup_provider(source.provider)
@@ -169,10 +177,13 @@ module DiscourseEvents
 
           begin
             publisher.destroy_event(data: source_data, opts: source.source_options_hash)
+            event_sources_to_destroy << event_source
           rescue => error
             logger.error(error.message)
           end
         end
+
+        EventSource.where(id: event_sources_to_destroy.map(&:id)).destroy_all if event_sources_to_destroy.any?
       end
 
       event.destroy!

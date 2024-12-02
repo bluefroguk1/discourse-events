@@ -27,8 +27,7 @@ module DiscourseEvents
         WHERE cardinality(topic_ids) = 0
       SQL
 
-      with_topics_query = DB.query(with_topics_sql)
-      without_topics_query = DB.query(without_topics_sql)
+      with_topics_query, without_topics_query = DB.query(with_topics_sql), DB.query(without_topics_sql)
 
       render_json_dump(
         page: page,
