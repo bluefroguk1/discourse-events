@@ -15,18 +15,23 @@ class DiscourseEvents::ApiKeysController < ApplicationController
   TODO: Instead we should allow a unique key to be created for each client.
 =end
   def index
-    key =
-      UserApiKey.create! attributes.reverse_merge(
-                           scopes: [
-                             UserApiKeyScope.new(
-                               name: "#{APPLICATION_NAME}:#{DiscourseEvents::USER_API_KEY_SCOPE}",
-                             ),
-                           ],
-                           # client_id has a unique constraint
-                           client_id: SecureRandom.uuid,
-                         )
+    keys = []
 
-    render json: [{ key: key.key, client_id: key.client_id }]
+    5.times do
+      key =
+        UserApiKey.create! attributes.reverse_merge(
+                             scopes: [
+                               UserApiKeyScope.new(
+                                 name: "#{APPLICATION_NAME}:#{DiscourseEvents::USER_API_KEY_SCOPE}",
+                               ),
+                             ],
+                             # client_id has a unique constraint
+                             client_id: SecureRandom.uuid,
+                           )
+      keys << { key: key.key, client_id: key.client_id }
+    end
+
+    render json: keys
   end
 
   private

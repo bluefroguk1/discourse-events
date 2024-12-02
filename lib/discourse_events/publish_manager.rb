@@ -138,6 +138,7 @@ module DiscourseEvents
         end
 
       if event.event_sources
+        event_sources_to_update = []
         event.event_sources.each do |event_source|
           source = event_source.source
           publisher.setup_provider(source.provider)
@@ -147,10 +148,13 @@ module DiscourseEvents
 
           begin
             publisher.update_event(data: source_data, opts: source.source_options_hash)
+            event_sources_to_update << event_source
           rescue => error
             logger.error(error.message)
           end
         end
+
+        EventSource.upsert_all(event_sources_to_update.map { |es| { id: es.id, updated_at: Time.now } }) if event_sources_to_update.any?
       end
 
       event.update!(data.update_params)
@@ -161,6 +165,7 @@ module DiscourseEvents
       return false unless event
 
       if event.event_sources
+        event_sources_to_destroy = []
         event.event_sources.each do |event_source|
           source = event_source.source
           publisher.setup_provider(source.provider)
@@ -169,10 +174,13 @@ module DiscourseEvents
 
           begin
             publisher.destroy_event(data: source_data, opts: source.source_options_hash)
+            event_sources_to_destroy << event_source
           rescue => error
             logger.error(error.message)
           end
         end
+
+        EventSource.where(id: event_sources_to_destroy.map(&:id)).destroy_all if event_sources_to_destroy.any?
       end
 
       event.destroy!
