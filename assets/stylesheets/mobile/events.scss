@@ -93,3 +93,132 @@
 body.calendar {
   -webkit-tap-highlight-color: transparent;
 }
+
+/* P952a */
+.events-calendar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+}
+
+.events-calendar .header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.events-calendar .events-calendar-navigation {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.events-calendar .events-calendar-body {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  border: 1px solid var(--primary-medium);
+  box-sizing: border-box;
+}
+
+.events-calendar .day,
+.events-calendar .weekday {
+  width: calc(100% / 7);
+  border: 1px solid var(--primary-medium);
+  box-sizing: border-box;
+  text-align: center;
+  padding: 5px;
+}
+
+.events-calendar .day {
+  height: 100px;
+  position: relative;
+}
+
+.events-calendar .day .container {
+  background-color: var(--primary-secondary);
+  height: 100%;
+}
+
+.events-calendar .day.today .container {
+  background-color: var(--highlight-low);
+}
+
+.events-calendar .day.different-month .container {
+  background-color: rgba(var(--primary-low), 0.5);
+  color: rgba(var(--primary), 0.5);
+}
+
+.events-calendar .day.selected .date label {
+  background-color: var(--tertiary);
+  color: var(--secondary);
+  border-radius: 50%;
+}
+
+.events-calendar .day .header {
+  position: relative;
+}
+
+.events-calendar .day .date label {
+  margin: 2px;
+  padding: 2px 3px;
+}
+
+.events-calendar .day .close {
+  position: absolute;
+  right: 3px;
+  top: -3px;
+}
+
+.events-calendar .day .hidden-events {
+  padding-left: 7px;
+}
+
+.events-calendar .day .has-events {
+  font-size: 7px;
+}
+
+.events-calendar .events-below {
+  margin-top: 8px;
+  margin-bottom: 15px;
+}
+
+.events-calendar .events-below ul.events-calendar-events li {
+  height: auto;
+  line-height: 20px;
+  margin: 5px 0;
+  white-space: normal;
+}
+
+.events-calendar .events-below ul.events-calendar-events li.empty {
+  display: none;
+}
+
+.events-calendar .events-below ul.events-calendar-events li img.emoji {
+  height: 20px;
+  width: 20px;
+}
+
+/* Paef0 */
+@media (max-width: 600px) {
+  .events-calendar .header {
+    flex-direction: column;
+  }
+
+  .events-calendar .events-calendar-navigation {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .events-calendar .events-calendar-body {
+    flex-direction: column;
+  }
+
+  .events-calendar .day,
+  .events-calendar .weekday {
+    width: 100%;
+  }
+}
