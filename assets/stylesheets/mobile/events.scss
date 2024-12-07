@@ -93,3 +93,25 @@
 body.calendar {
   -webkit-tap-highlight-color: transparent;
 }
+
+/* Increase the touch area for calendar navigation buttons */
+.events-calendar-navigation .d-button {
+  padding: 10px;
+}
+
+/* Add media queries to improve the Calendar's responsiveness and user interaction on mobile devices */
+@media (max-width: 600px) {
+  .events-calendar-body {
+    .day {
+      height: 50px;
+    }
+
+    .weekday {
+      height: 20px;
+    }
+  }
+
+  .events-calendar-card {
+    padding: 10px;
+  }
+}

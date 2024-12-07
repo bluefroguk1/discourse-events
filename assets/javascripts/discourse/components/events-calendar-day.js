@@ -63,6 +63,23 @@ export default Component.extend({
     }
   },
 
+  touchStart(event) {
+    this.touchStartX = event.touches[0].clientX;
+    this.touchStartY = event.touches[0].clientY;
+  },
+
+  touchEnd(event) {
+    const touchEndX = event.changedTouches[0].clientX;
+    const touchEndY = event.changedTouches[0].clientY;
+
+    if (
+      Math.abs(touchEndX - this.touchStartX) < 10 &&
+      Math.abs(touchEndY - this.touchStartY) < 10
+    ) {
+      this.click();
+    }
+  },
+
   @discourseComputed("index")
   date() {
     const day = this.get("day");
