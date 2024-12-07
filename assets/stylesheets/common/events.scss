@@ -690,3 +690,245 @@ ul.events-webcal-notices {
     background-color: var(--success);
   }
 }
+
+/* P808c */
+/* Pefb0 */
+.events-calendar-body {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  margin-top: 15px;
+  border-bottom: 1px solid var(--primary-medium);
+  border-left: 1px solid var(--primary-medium);
+  box-sizing: border-box;
+
+  .day,
+  .weekday {
+    width: calc(99.9999% / 7);
+    border-top: 1px solid var(--primary-medium);
+    border-right: 1px solid var(--primary-medium);
+    box-sizing: border-box;
+  }
+
+  .weekday {
+    height: 23px;
+    line-height: 23px;
+
+    span {
+      padding: 0 4px;
+    }
+  }
+
+  .day {
+    height: 130px;
+    transition: all 0.2s;
+    position: relative;
+
+    .container {
+      background-color: var(--primary-secondary);
+    }
+
+    &.today .container {
+      background-color: var(--highlight-low);
+      height: 100%;
+    }
+
+    &.different-month .container {
+      background-color: rgba(var(--primary-low), 0.5);
+      color: rgba(var(--primary), 0.5);
+      height: 100%;
+    }
+
+    &.selected .date label {
+      background-color: var(--tertiary);
+      color: var(--secondary);
+      border-radius: 50%;
+    }
+
+    &.expanded .container {
+      position: absolute;
+      z-index: 100;
+      height: auto;
+      width: auto;
+      min-width: 100%;
+      overflow: visible;
+      border: 1px solid var(--primary-low);
+      box-shadow: 0 2px 2px rgba(0, 0, 0, 0.4);
+      background-color: var(--secondary);
+
+      .events {
+        padding: 3px 4px;
+
+        li {
+          height: 25px;
+          line-height: 25px;
+
+          &.empty {
+            display: none;
+          }
+        }
+      }
+    }
+
+    .header {
+      position: relative;
+    }
+
+    .date label {
+      margin: 2px;
+      padding: 2px 3px;
+      margin-bottom: 0;
+    }
+
+    .close {
+      position: absolute;
+      right: 3px;
+      top: -3px;
+
+      .d-icon {
+        color: var(--primary);
+      }
+    }
+
+    .hidden-events {
+      padding-left: 7px;
+
+      .btn {
+        padding: 2px 4px;
+      }
+    }
+
+    .has-events {
+      font-size: 7px;
+    }
+  }
+}
+
+ul.events-calendar-events {
+  margin: 0;
+  list-style: none;
+
+  li {
+    position: relative;
+    margin: 1px 0;
+
+    .fk-d-tooltip__trigger,
+    .fk-d-tooltip__trigger-container {
+      width: 100%;
+      height: 20px;
+      vertical-align: top;
+    }
+
+    .event {
+      padding: 0 7px;
+      width: 100%;
+      height: inherit;
+      line-height: 18px;
+      border-top: 1px solid transparent;
+      border-bottom: 1px solid transparent;
+      box-sizing: border-box;
+      white-space: nowrap;
+      overflow: hidden;
+      cursor: pointer;
+      display: block;
+      color: var(--primary);
+
+      span {
+        font-size: 0.9em;
+      }
+
+      .fa-circle {
+        color: inherit;
+        font-size: 0.8em;
+      }
+
+      &.all-day {
+        background-color: var(--primary-tertiary);
+        color: var(--secondary);
+        border-top: 1px solid var(--primary-low);
+        border-bottom: 1px solid var(--primary-low);
+
+        &:not(.full-width) {
+          &.start {
+            margin-left: 4px;
+            border-radius: 4px 0 0 4px;
+          }
+
+          &.multi span.title {
+            position: absolute;
+            z-index: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+
+          &.start span.time {
+            margin-right: 5px;
+            float: left;
+          }
+
+          &.end {
+            margin-right: 4px;
+            border-radius: 0 4px 4px 0;
+          }
+        }
+      }
+
+      img.emoji {
+        height: 15px;
+        width: 15px;
+      }
+    }
+  }
+}
+
+.events-calendar-card {
+  padding: 0.5em;
+
+  .topic-link {
+    font-size: 1.3em;
+    color: var(--primary);
+
+    p {
+      margin: 0;
+    }
+  }
+
+  .topic-meta {
+    margin-top: 6px;
+    width: 100%;
+    display: flex;
+    flex-flow: wrap;
+    align-items: center;
+  }
+
+  .topic-event {
+    margin-top: 6px;
+    width: 100%;
+    display: inline-block;
+    cursor: pointer;
+    color: var(--primary);
+    .deadline {
+      display: inline-block;
+      svg {
+        margin-right: 0.3em;
+      }
+      svg:nth-of-type(2) {
+        margin-left: 0.6em;
+      }
+    }
+  }
+
+  .topic-excerpt {
+    margin-top: 6px;
+    cursor: pointer;
+    line-height: 1.4;
+    width: 100%;
+    word-wrap: break-word;
+    color: var(--primary);
+    display: inline-block;
+
+    p {
+      margin: 0;
+    }
+  }
+}
