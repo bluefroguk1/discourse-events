@@ -6,19 +6,20 @@
       @label={{this.todayLabel}}
       @action={{action "today"}}
       @icon="far-calendar"
+      class="touch-friendly-button"
     />
-    <DButton @icon="chevron-left" @action={{action "monthPrevious"}} />
-    <DButton @icon="chevron-right" @action={{action "monthNext"}} />
+    <DButton @icon="chevron-left" @action={{action "monthPrevious"}} class="touch-friendly-button" />
+    <DButton @icon="chevron-right" @action={{action "monthNext"}} class="touch-friendly-button" />
     <ComboBox
       @content={{this.months}}
       @value={{this.month}}
-      class="month-dropdown"
+      class="month-dropdown touch-friendly-dropdown"
       @onChange={{action (mut this.month)}}
     />
     <ComboBox
       @content={{this.years}}
       @value={{this.year}}
-      class="year-dropdown"
+      class="year-dropdown touch-friendly-dropdown"
       @onChange={{action (mut this.year)}}
     />
   </div>

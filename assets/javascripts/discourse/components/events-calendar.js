@@ -76,6 +76,8 @@ export default Component.extend({
   positionCalendar() {
     this.handleResize();
     window.addEventListener("resize", this.handleResize, false);
+    window.addEventListener("touchstart", this.handleTouchStart, false);
+    window.addEventListener("touchmove", this.handleTouchMove, false);
   },
 
   @discourseComputed("siteSettings.login_required", "category.read_restricted")
@@ -86,6 +88,8 @@ export default Component.extend({
   @on("willDestroy")
   teardown() {
     window.removeEventListener("resize", this.handleResize);
+    window.removeEventListener("touchstart", this.handleTouchStart);
+    window.removeEventListener("touchmove", this.handleTouchMove);
   },
 
   @bind
@@ -94,6 +98,37 @@ export default Component.extend({
       return;
     }
     this.set("responsiveBreak", window.innerWidth < RESPONSIVE_BREAKPOINT);
+  },
+
+  @bind
+  handleTouchStart(event) {
+    this.touchStartX = event.touches[0].clientX;
+    this.touchStartY = event.touches[0].clientY;
+  },
+
+  @bind
+  handleTouchMove(event) {
+    if (!this.touchStartX || !this.touchStartY) {
+      return;
+    }
+
+    const touchEndX = event.touches[0].clientX;
+    const touchEndY = event.touches[0].clientY;
+
+    const diffX = this.touchStartX - touchEndX;
+    const diffY = this.touchStartY - touchEndY;
+
+    if (Math.abs(diffX) > Math.abs(diffY)) {
+      // Horizontal swipe
+      if (diffX > 0) {
+        this.send("monthNext");
+      } else {
+        this.send("monthPrevious");
+      }
+    }
+
+    this.touchStartX = null;
+    this.touchStartY = null;
   },
 
   forceResponsive: false,
