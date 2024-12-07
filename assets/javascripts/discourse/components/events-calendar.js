@@ -193,6 +193,16 @@ export default Component.extend({
     }
   },
 
+  @action
+  handleMobileClick(event) {
+    const target = event.target;
+    if (target.classList.contains("day")) {
+      const date = target.getAttribute("data-day");
+      const month = this.get("month");
+      this.selectDate(date, month);
+    }
+  },
+
   actions: {
     selectDate(selectedDate, selectedMonth) {
       const month = this.get("month");

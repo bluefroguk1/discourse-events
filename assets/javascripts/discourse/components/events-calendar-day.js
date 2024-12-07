@@ -54,10 +54,22 @@ export default Component.extend({
     return index % 7;
   },
 
-  click() {
+  click(event) {
     const canSelectDate = this.get("canSelectDate");
     if (canSelectDate) {
       const date = this.get("date");
+      const month = this.get("month");
+      this.selectDate(date, month);
+    } else {
+      this.handleMobileClick(event);
+    }
+  },
+
+  @action
+  handleMobileClick(event) {
+    const target = event.target;
+    if (target.classList.contains("day")) {
+      const date = target.getAttribute("data-day");
       const month = this.get("month");
       this.selectDate(date, month);
     }

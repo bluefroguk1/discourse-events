@@ -93,3 +93,48 @@
 body.calendar {
   -webkit-tap-highlight-color: transparent;
 }
+
+.events-calendar-body {
+  .day {
+    cursor: pointer;
+  }
+}
+
+.events-calendar .header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.events-calendar .header .events-calendar-navigation {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5em;
+}
+
+.events-calendar .header .events-calendar-subscription-links {
+  display: flex;
+  gap: 0.5em;
+}
+
+.events-calendar .events-below {
+  margin-top: 8px;
+  margin-bottom: 15px;
+}
+
+.events-calendar .events-below ul.events-calendar-events li {
+  height: auto;
+  line-height: 20px;
+  margin: 5px 0;
+  white-space: normal;
+}
+
+.events-calendar .events-below ul.events-calendar-events li.empty {
+  display: none;
+}
+
+.events-calendar .events-below ul.events-calendar-events li img.emoji {
+  height: 20px;
+  width: 20px;
+}
