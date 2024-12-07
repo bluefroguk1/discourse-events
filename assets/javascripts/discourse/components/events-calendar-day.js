@@ -63,6 +63,10 @@ export default Component.extend({
     }
   },
 
+  touchEnd() {
+    this.click();
+  },
+
   @discourseComputed("index")
   date() {
     const day = this.get("day");

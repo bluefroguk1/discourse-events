@@ -97,7 +97,7 @@ export default Component.extend({
   },
 
   forceResponsive: false,
-  responsive: or("forceResponsive", "responsiveBreak", "site.mobileView"),
+  responsive: or("forceResponsive", "responsiveBreak", "site.mobileView", true),
   showFullTitle: not("responsive"),
   eventsBelow: alias("responsive"),
 
