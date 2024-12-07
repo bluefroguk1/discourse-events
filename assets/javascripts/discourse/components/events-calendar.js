@@ -71,6 +71,11 @@ export default Component.extend({
     let year = currentYear;
 
     this.setProperties({ currentDate, currentMonth, currentYear, month, year });
+
+    // Ensure the calendar loads correctly
+    if (!this.get("topics")) {
+      this.transitionToMonth(month, year);
+    }
   },
 
   positionCalendar() {
