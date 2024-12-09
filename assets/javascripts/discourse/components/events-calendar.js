@@ -125,13 +125,20 @@ export default Component.extend({
     });
   },
 
-  @discourseComputed("currentMonth", "currentYear")
-  days(currentMonth, currentYear) {
+  @discourseComputed("currentMonth", "currentYear", "page")
+  days(currentMonth, currentYear, page = 1) {
     const { start, end } = calendarDays(currentMonth, currentYear);
     let days = [];
-    for (let day = moment(start); day.isBefore(end); day.add(1, "days")) {
+    
+    // Load events in chunks
+    const CHUNK_SIZE = 7; // One week at a time
+    const startDay = moment(start).add((page-1) * CHUNK_SIZE, 'days');
+    const endDay = moment(startDay).add(CHUNK_SIZE, 'days');
+    
+    for (let day = moment(startDay); day.isBefore(endDay); day.add(1, "days")) {
       days.push(moment().year(day.year()).month(day.month()).date(day.date()));
     }
+    
     return days;
   },
 
@@ -193,6 +200,20 @@ export default Component.extend({
     }
   },
 
+  @action
+  loadMoreDays() {
+    if (this.loading) return;
+    
+    this.set('loading', true);
+    this.incrementProperty('page');
+    
+    // Load more events via API
+    return this.store.findFiltered("topicList", {
+      filter: this._getFilter(),
+      params: this._getParams()
+    }).finally(() => this.set('loading', false));
+  },
+
   actions: {
     selectDate(selectedDate, selectedMonth) {
       const month = this.get("month");
@@ -225,6 +246,7 @@ export default Component.extend({
       this.setProperties({ month, year });
     },
 
+    @action
     monthNext() {
       let currentMonth = this.get("currentMonth");
       let year = this.get("currentYear");

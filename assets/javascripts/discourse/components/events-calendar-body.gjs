@@ -1,46 +1,40 @@
 import Component from "@glimmer/component";
-import { firstDayOfWeek } from "../lib/date-utilities";
+import { tracked } from "@glimmer/tracking";
+import { action } from "@glimmer/tracking";
 import EventsCalendarDay from "./events-calendar-day";
 
 export default class EventsCalendarBody extends Component {
-  get weekdays() {
-    let data = moment.localeData();
-    let weekdays = this.args.responsive ? data.weekdaysMin() : data.weekdays();
-    let firstDay = firstDayOfWeek();
+  @tracked visibleRange = {
+    start: 0,
+    end: 20
+  };
 
-    // Create a copy of the array before splicing to avoid modifying the original
-    weekdays = [...weekdays];
+  get visibleEvents() {
+    return this.args.topics.slice(this.visibleRange.start, this.visibleRange.end);
+  }
 
-    // If firstDay is not 0 (Sunday), rotate the array
-    if (firstDay > 0) {
-      let beforeFirst = weekdays.splice(0, firstDay);
-      weekdays.push(...beforeFirst);
-    }
-
-    return weekdays;
+  @action
+  updateVisibleRange({ startIndex, endIndex }) {
+    this.visibleRange = {
+      start: startIndex,
+      end: endIndex
+    };
   }
 
   <template>
-    <div class="events-calendar-body">
-      {{#each this.weekdays as |weekday|}}
-        <div class="weekday">
-          <span>{{weekday}}</span>
-        </div>
-      {{/each}}
-
-      {{#each @days as |day index|}}
-        <EventsCalendarDay
-          @day={{day}}
-          @currentDate={{@currentDate}}
-          @currentMonth={{@currentMonth}}
-          @selectDate={{@selectDate}}
-          @canSelectDate={{@canSelectDate}}
-          @showEvents={{@showEvents}}
-          @topics={{@topics}}
-          @responsive={{@responsive}}
-          @index={{index}}
-        />
-      {{/each}}
-    </div>
+    <OcclussionCollection
+      @items={{@topics}}
+      @estimateHeight={{50}}
+      @containerSelector=".events-calendar-body"
+      @onVisibleItemsChange={{this.updateVisibleRange}}
+      as |event|
+    >
+      <EventsCalendarDay
+        @day={{event.day}}
+        @topics={{this.visibleEvents}}
+        @currentDate={{@currentDate}}
+        @currentMonth={{@currentMonth}}
+      />
+    </OcclussionCollection>
   </template>
 }

@@ -537,12 +537,21 @@ function setupEventForm(event, args = {}) {
   return props;
 }
 
+// Cache event calculations
+const eventCalculationCache = new Map();
+
 function eventsForDay(day, topics, args = {}) {
+  const cacheKey = `${day.format()}-${topics.mapBy('id').join()}`;
+  
+  if (eventCalculationCache.has(cacheKey)) {
+    return eventCalculationCache.get(cacheKey);
+  }
+
   const events = topics.filter((t) => t.event);
   const fullWidth = args.dateEvents || args.expanded;
   let blockIndex = 0;
 
-  return events.reduce((dayEvents, topic) => {
+  const eventsArray = events.reduce((dayEvents, topic) => {
     const { start, end, allDay, multiDay } = setupEvent(topic.event, args);
     const { startIsSame, endIsSame, isBetween, daysLeft } = eventCalculations(
       day,
@@ -641,6 +650,14 @@ function eventsForDay(day, topics, args = {}) {
 
     return dayEvents;
   }, []);
+
+  eventCalculationCache.set(cacheKey, eventsArray);
+  return eventsArray;
+}
+
+// Clear cache when month changes
+function clearEventCache() {
+  eventCalculationCache.clear();
 }
 
 export {

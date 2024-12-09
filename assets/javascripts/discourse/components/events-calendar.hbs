@@ -49,16 +49,24 @@
     </div>
   {{/if}}
 </div>
-<EventsCalendarBody
-  @days={{this.days}}
-  @topics={{this.topics}}
-  @currentMonth={{this.currentMonth}}
-  @currentDate={{this.currentDate}}
-  @selectDate={{action "selectDate"}}
-  @canSelectDate={{this.canSelectDate}}
-  @showEvents={{this.showEvents}}
-  @responsive={{this.responsive}}
-/>
+
+{{#if this.loading}}
+  <div class="calendar-loading">
+    <LoadingSpinner />
+  </div>
+{{else}}
+  <EventsCalendarBody
+    @days={{this.days}}
+    @topics={{this.topics}}
+    @currentMonth={{this.currentMonth}}
+    @currentDate={{this.currentDate}}
+    @selectDate={{action "selectDate"}}
+    @canSelectDate={{this.canSelectDate}}
+    @showEvents={{this.showEvents}}
+    @responsive={{this.responsive}}
+  />
+{{/if}}
+
 {{#if this.eventsBelow}}
   <div class="events-below">
     <ul class="events-calendar-events">
