@@ -115,7 +115,6 @@ he:
             confirm: להסיר את '%{source_name}'? הסרת מקור מבירה את כל האירועים והחיבורים הקשורים.
           name:
             label: שם
-            placeholder: עם_קווים_תחתיים
           provider:
             label: ספק
             select: נא לבחור ספק…
@@ -166,10 +165,8 @@ he:
               title: הספק לא מאומת.
           name:
             label: שם
-            placeholder: עם_קווים_תחתיים
           url:
             label: כתובת
-            placeholder: כתובת ניהול
           provider_type:
             label: סוג
             select: נא לבחור סוג…

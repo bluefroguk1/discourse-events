@@ -115,7 +115,6 @@ de:
             confirm: Bist du sicher, dass du entfernen möchtest? Wenn du eine Quelle entfernst, werden alle zugehörigen Veranstaltungen und Verbindungen gelöscht.
           name:
             label: Name
-            placeholder: unterstrichen
           provider:
             label: Anbieter
             select: Wähle einen Anbieter...
@@ -140,10 +139,8 @@ de:
           not_ready: Nicht bereit
           name:
             label: Name
-            placeholder: unterstrichen
           url:
             label: URL
-            placeholder: admin url
           provider_type:
             label: Typ
             select: Wähle einen Typ...

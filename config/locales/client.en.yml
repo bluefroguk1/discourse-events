@@ -130,7 +130,6 @@ en:
             confirm: Are you sure you want to remove this source? Removing a source does not remove its events.
           name:
             label: Name
-            placeholder: underscored
           provider:
             label: Provider
             instructions: Service providing events.
@@ -220,10 +219,8 @@ en:
               title: Provider is not authenticated.
           name:
             label: Name
-            placeholder: underscored
           url:
             label: URL
-            placeholder: admin url
           provider_type:
             label: Type
             select: Select a type...
