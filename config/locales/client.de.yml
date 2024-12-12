@@ -21,11 +21,11 @@ de:
       error: "Das Ende der Veranstaltung sollte mit dem Beginn der Veranstaltung übereinstimmen oder danach liegen"
     category:
       events_setting_heading: "Veranstaltungen"
-      enable_events: "Erlaube, Veranstaltungen zu Themen dieser Kategorie hinzuzufügen (überschreibt site setting)."
-      enable_events_agenda: "Agenda Liste in dieser Kategorie anzeigen (überschreibt site setting)."
-      enable_events_calendar: "Kalender für diese Kategorie anzeigen (überschreibt site setting)."
-      events_min_trust_to_create: "Minimale Vertrauensstufe, um Veranstaltungen in dieser Kategorie zu erstellen (überschreibt site setting)."
-      events_event_label_no_text: "Text auf Event hinzufügen Button ausblenden (überschreibt site setting)."
+      enable_events: "Erlaube, Veranstaltungen zu Themen dieser Kategorie hinzuzufügen."
+      enable_events_agenda: "Agenda Liste in dieser Kategorie anzeigen."
+      enable_events_calendar: "Kalender für diese Kategorie anzeigen."
+      events_min_trust_to_create: "Minimale Vertrauensstufe, um Veranstaltungen in dieser Kategorie zu erstellen."
+      events_event_label_no_text: "Text auf Event hinzufügen Button ausblenden."
       require_event: "Alle Themen in dieser Kategorie müssen ein Ereignis haben."
     composer:
       error:

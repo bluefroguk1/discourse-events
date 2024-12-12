@@ -6,14 +6,6 @@ class DiscourseEvents::ApiKeysController < ApplicationController
 
   before_action :ensure_logged_in
 
-=begin
-  As soon as a new client_id is passed for the same API key, the key record
-  will be updated to contain the new client_id automatically.
-  See Auth::DefaultCurrentUserProvider#lookup_user_api_user_and_update_key
-
-  This means that rate limits could be exceeded in some cases.
-  TODO: Instead we should allow a unique key to be created for each client.
-=end
   def index
     key =
       UserApiKey.create! attributes.reverse_merge(
@@ -22,7 +14,6 @@ class DiscourseEvents::ApiKeysController < ApplicationController
                                name: "#{APPLICATION_NAME}:#{DiscourseEvents::USER_API_KEY_SCOPE}",
                              ),
                            ],
-                           # client_id has a unique constraint
                            client_id: SecureRandom.uuid,
                          )
 

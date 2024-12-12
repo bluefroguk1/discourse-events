@@ -94,4 +94,3 @@ plugins:
   events_verbose_auth_logs:
     default: false
     hidden: true
-
