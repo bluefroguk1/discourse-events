@@ -44,7 +44,6 @@ export default class EventRsvp extends Component {
 
   @action
   openModal() {
-    event?.preventDefault();
     this.modal.show(EventRsvpModal, {
       model: {
         topic: this.get("topic"),
